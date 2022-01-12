@@ -8,7 +8,11 @@ const App = () => {
 	const [list, setList] = useState([]);
 	const [isEditing, setIsEditing] = useState(false);
 	const [editID, setEditID] = useState(null);
-	const [alert, setAlert] = useState({ show: false, msg: "", type: "" });
+	const [alert, setAlert] = useState({
+		show: false,
+		msg: "",
+		type: "",
+	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -16,24 +20,30 @@ const App = () => {
 
 		if (!name) {
 			//display alert
-			//setAlert(true, "danger", "please enter value");
-			console.log("1");
+			//setAlert({ show: true, msg: "please enter value", type: "danger" });
+			showAlert("true", "danger", "pls enter value");
+			//console.log("1");
 		} else if (name && isEditing) {
 			//deal with edit
-			console.log("2");
+			//console.log("2");
 		} else {
 			//add item
-			console.log("hi");
+			//console.log("hi");
 			const newItem = { id: new Date().getTime().toString(), title: name };
 			setList([...list, newItem]);
 			setName("");
 		}
 	};
 
+	//setAlert
+	const showAlert = (show = false, type = "", msg = "") => {
+		setAlert({ show, type, msg });
+	};
+
 	return (
 		<section className="section-center">
 			<form className="grocery-form" onSubmit={handleSubmit}>
-				{alert.show && <Alert />}
+				{alert.show && <Alert {...alert} removeAlert={showAlert} />}
 				<h3>grocery bud proj</h3>
 				<div className="form-control">
 					<input
