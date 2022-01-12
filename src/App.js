@@ -56,9 +56,7 @@ const App = () => {
 	return (
 		<section className="section-center">
 			<form className="grocery-form" onSubmit={handleSubmit}>
-				{alert.show && (
-					<Alert {...alert} removeAlert={showAlert} clearList={clearList} />
-				)}
+				{alert.show && <Alert {...alert} removeAlert={showAlert} list={list} />}
 				<h3>grocery bud proj</h3>
 				<div className="form-control">
 					<input
