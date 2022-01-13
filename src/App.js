@@ -15,6 +15,8 @@ const App = () => {
 	});
 	const nameRef = useRef();
 
+	//console.log(name);
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		//console.log("Hello World");
@@ -27,12 +29,29 @@ const App = () => {
 		} else if (name && isEditing) {
 			//deal with edit
 			//console.log("2");
+			setList(
+				list.map((item) => {
+					if (item.id === editID) {
+						return { ...item, title: name };
+						//return { ...item, title: name, id: editID };
+					}
+
+					return item;
+				})
+			);
+
+			setName("");
+			setEditID(null);
+			setIsEditing(false);
+			showAlert(true, "success", "value changed");
 		} else {
 			//add item
 			//console.log("hi");
 			showAlert(true, "success", "item added to the list");
 			const newItem = { id: new Date().getTime().toString(), title: name };
+			//console.log(newItem);
 			setList([...list, newItem]);
+			//console.log(list);
 			setName("");
 			nameRef.current.focus();
 		}
@@ -51,6 +70,14 @@ const App = () => {
 	const removeItem = (id) => {
 		showAlert(true, "danger", "item removed");
 		setList(list.filter((item) => item.id !== id));
+	};
+
+	const editItem = (id) => {
+		console.log(id);
+		const specificItem = list.find((item) => item.id === id);
+		setIsEditing(true);
+		setEditID(id);
+		setName(specificItem.title);
 	};
 
 	return (
@@ -75,7 +102,7 @@ const App = () => {
 
 			{list.length > 0 && (
 				<div className="grocery-container">
-					<List items={list} removeItem={removeItem} />
+					<List items={list} removeItem={removeItem} editItem={editItem} />
 					<button className="clear-btn" onClick={clearList}>
 						clear items
 					</button>
